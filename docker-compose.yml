@@ -1,0 +1,58 @@
+version: '3.1'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.2
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/dataulimits
+    cap_add: 
+      - IPC_LOCK
+    ports:
+      - 9200:9200
+    networks:
+      - elasticsearch
+
+  application:
+    working_dir: /app
+    container_name: application
+    image: webdevops/php-apache-dev:alpine
+    depends_on:
+      - elasticsearch
+    command: tail -f /dev/stdout
+    volumes:
+      - "./app:/app"
+    networks:
+      - elasticsearch
+
+  cerebro:
+    image: lmenezes/cerebro
+    environment:
+      # Basic auth using admin/admin user
+      - AUTH_TYPE=basic
+      - BASIC_AUTH_USER=admin
+      - BASIC_AUTH_PWD=admin
+    ports:
+      - 9000:9000
+
+
+
+
+volumes:
+  data01:
+    driver: local
+  app:
+    driver: local
+
+networks:
+  elasticsearch:
+    driver: bridge
