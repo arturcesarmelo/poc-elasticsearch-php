@@ -79,7 +79,7 @@ In this repo the elasticsearch is running as `single-node`. The **user** and **p
 
 **seed with neighborhood data**
 
-In this project, there is a `see.php` on /app folder. This script consume the `bairros_maceió.txt` file
+In this project, there is a `seed.php` on `/app` folder. This script consume the `bairros_maceió.txt` file
 to bulk insert data into elasticsearch. Just execute the following commands:
 
 ```bash
@@ -100,7 +100,7 @@ This is the commands to fetch results from elasticsearch:
 
 ~ php search.php <neighborhood_name>
 
-# php search.php ponta
+# e.g.: php search.php ponta
 ```
 
 The output shold be like that:
@@ -161,7 +161,7 @@ The output shold be like that:
 ```
 
 If you wants to test other possibilities, just open the `app/bairros_maceió.txt` file and use 
-some of the names.
+some other name.
 
 ## Cerebro
 
